@@ -1,56 +1,46 @@
 const { response } = require("express");
 const express = require("express");
 const Stripe = require("stripe");
-const router = express.Router(); 
-require("dotenv").config();
+const router = express.Router();
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
 CLIENT_URL = "http://localhost:3000";
-STRIPE_KEY = "sk_test_51MG43NSB2bJ4cNuX05GR2WI6O4wsGuCCdmSyiBYPpMT4f6tkqbnDwAnXRHUQIUnBQKqCXr4RHlt8X8GsCPVMDknV00l9mkkF1g"
- 
-const stripe = Stripe(STRIPE_KEY) 
- 
+
+const stripe = Stripe(process.env.STRIPE_KEY1);
+
 router.post("/create-checkout-session", async (req, res) => {
-  const customer = await stripe.customers.create({ 
+  const customer = await stripe.customers.create({
     metadata: {
       // userId: req.body.userId,
-      cart: JSON.stringify(req.body.cartItems), 
-    },  
-  });   
+      cart: JSON.stringify(req.body.cartItems),
+    },
+  });
 
-  
-  
-
-   const line_items = req.body.cartItems.map((element) => {
-    
-    return { 
-      price_data: { 
-        currency: "inr", 
+  const line_items = req.body.cartItems.map((element) => {
+    return {
+      price_data: {
+        currency: "inr",
         product_data: {
           name: element.item_name,
           images: [element.img],
-          // description: item.description, 
-          metadata: {   
+          // description: item.description,
+          metadata: {
             id: element.id,
-          },  
+          },
         },
-        unit_amount: element.price * 100, 
+        unit_amount: element.price * 100,
       },
-       
-      quantity: 1,   
-    }; 
-  });      
 
-
-
-   
-
-
+      quantity: 1,
+    };
+  });
 
   const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],     
+    payment_method_types: ["card"],
     shipping_address_collection: {
-      allowed_countries: [ "IN","US" ],
+      allowed_countries: ["IN", "US"],
     },
-    shipping_options: [  
+    shipping_options: [
       {
         shipping_rate_data: {
           type: "fixed_amount",
@@ -89,7 +79,7 @@ router.post("/create-checkout-session", async (req, res) => {
             maximum: {
               unit: "business_day",
               value: 1,
-            }, 
+            },
           },
         },
       },
@@ -98,7 +88,7 @@ router.post("/create-checkout-session", async (req, res) => {
       enabled: true,
     },
     line_items,
-     
+
     mode: "payment",
     customer: customer.id,
     success_url: `${CLIENT_URL}/success`,
@@ -108,8 +98,6 @@ router.post("/create-checkout-session", async (req, res) => {
   // res.redirect(303, session.url);
   res.send({ url: session.url });
 });
-
-
 
 // // Create order function
 
@@ -142,5 +130,4 @@ router.post("/create-checkout-session", async (req, res) => {
 //   }
 // };
 
-
-  module.exports = router;
+module.exports = router;

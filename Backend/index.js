@@ -1,13 +1,12 @@
-const ATLAS_URI =
-  "mongodb+srv://SojwalIngle:Sojwal2000@scrapmanagementportal.mrnodmr.mongodb.net/ScrapManagementPortal";
-const express = require("express");  
+const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const stripe = require("./routes/stripe");
 const upload = require("./routes/allProduct");
 const fileUpload = require("express-fileupload");
 const app = express();
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
 const port = 5000;
 
 app.use(
@@ -19,7 +18,7 @@ app.use(
 app.use(cors());
 app.use(express.json());
 app.use("/file", upload);
-const url = ATLAS_URI;
+const url = process.env.ATLAS_URI;
 
 //routes
 app.use("/api/stripe", stripe);
