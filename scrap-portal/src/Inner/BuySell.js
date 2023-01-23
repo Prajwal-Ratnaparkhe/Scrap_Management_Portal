@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import InnerNav from "./InnerNav";
+import banner from "../images/banner.jpg"
 
 const BuySell = () => {
   const test = sessionStorage.getItem("Auth Token");
@@ -56,15 +57,15 @@ const BuySell = () => {
                 How We Work ?
               </Link>
             </div>
-
-<div className="container">
-
-  <img src="https://apnakabadewala.com/wp-content/uploads/2022/05/Black-and-White-Sleek-and-Simple-CopywriterEditor-Freelance-Website-4.png" alt="how er work"/>
-</div> */}
-
-
-
-
+            */}
+            <center>
+              <div className="container">
+                <img
+                  src={banner}
+                  alt="how er work"
+                />
+              </div>
+            </center>
           </div>
         </div>
       </div>

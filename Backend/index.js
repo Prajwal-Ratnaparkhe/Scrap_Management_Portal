@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const stripe = require("./routes/stripe");
+const stripe = require("./routes/stripe"); 
 const upload = require("./routes/allProduct");
 const fileUpload = require("express-fileupload");
 const app = express();
@@ -38,7 +38,7 @@ mongoose.connect(url);
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("mongo DB success");
-});
+}); 
 
 app.listen(port, () => {
   console.log(`app is running at http://localhost:${port}`);
